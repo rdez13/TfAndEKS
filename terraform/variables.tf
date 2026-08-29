@@ -54,6 +54,18 @@ variable "az_count" {
   }
 }
 
+variable "app_name" {
+  description = "Name of the demo application. Used for the ECR repository, Kubernetes namespace, and workload names."
+  type        = string
+  default     = "demo-app"
+}
+
+variable "ecr_image_retention_count" {
+  description = "Number of tagged images to keep in ECR before the lifecycle policy expires older ones."
+  type        = number
+  default     = 10
+}
+
 variable "kubernetes_version" {
   description = "EKS control plane version. Must be in AWS standard support."
   type        = string

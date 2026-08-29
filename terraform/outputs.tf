@@ -34,6 +34,16 @@ output "oidc_provider_arn" {
   value       = module.eks.oidc_provider_arn
 }
 
+output "ecr_repository_url" {
+  description = "ECR repository URL. CI pushes here; the Deployment pulls from here."
+  value       = aws_ecr_repository.app.repository_url
+}
+
+output "ecr_login_command" {
+  description = "Command to authenticate Docker against ECR for manual pushes."
+  value       = "aws ecr get-login-password --region ${var.aws_region} --profile ${var.aws_profile} | docker login --username AWS --password-stdin ${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com"
+}
+
 output "configure_kubectl" {
   description = "Command to point kubectl at this cluster."
   value       = "aws eks update-kubeconfig --name ${module.eks.cluster_name} --region ${var.aws_region} --profile ${var.aws_profile}"
