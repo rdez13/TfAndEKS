@@ -16,6 +16,11 @@ module "eks" {
 
   endpoint_public_access = true
 
+  # KMS enforces a waiting period before a key is actually deleted, and the module
+  # defaults to 30 days. Since this cluster is destroyed and rebuilt often, each cycle
+  # would leave another key billing ~$1/month for a month. 7 is the minimum allowed.
+  kms_key_deletion_window_in_days = 7
+
   # Grants the identity running Terraform (tf-admin) cluster-admin via an EKS access
   # entry. Without this you get a cluster you cannot kubectl into — access entries have
   # replaced the old aws-auth ConfigMap, and forgetting this is the classic way to lock
