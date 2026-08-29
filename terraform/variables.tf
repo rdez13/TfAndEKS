@@ -30,3 +30,26 @@ variable "github_repo" {
   type        = string
   default     = "rdez13/TfAndEKS"
 }
+
+variable "cluster_name" {
+  description = "Name of the EKS cluster."
+  type        = string
+  default     = "tfandeks-eks"
+}
+
+variable "vpc_cidr" {
+  description = "CIDR block for the project VPC. Must not overlap the account's default VPC (172.31.0.0/16)."
+  type        = string
+  default     = "10.0.0.0/16"
+}
+
+variable "az_count" {
+  description = "Number of availability zones to spread subnets across. EKS requires at least 2."
+  type        = number
+  default     = 2
+
+  validation {
+    condition     = var.az_count >= 2
+    error_message = "EKS requires subnets in at least 2 availability zones."
+  }
+}

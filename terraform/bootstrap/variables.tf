@@ -21,3 +21,21 @@ variable "project_name" {
   type        = string
   default     = "tfandeks"
 }
+
+# Deliberately has NO default: this repo is public, and a default would commit a personal
+# email address to it. Supplied via terraform.tfvars, which is gitignored.
+variable "alert_email" {
+  description = "Email address that receives budget alerts."
+  type        = string
+
+  validation {
+    condition     = can(regex("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", var.alert_email))
+    error_message = "alert_email must be a valid email address."
+  }
+}
+
+variable "budget_limit_usd" {
+  description = "Monthly spend ceiling in USD. Alerts at 50% actual and 100% forecast."
+  type        = string
+  default     = "20"
+}
